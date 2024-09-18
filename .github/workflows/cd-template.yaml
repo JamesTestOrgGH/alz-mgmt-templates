@@ -1,44 +1,12 @@
 ---
-name: Continuous Delivery
+name: Deploy LZ
 on:
-  workflow_call:
-    inputs:
-      skip_what_if:
-        default: false
-        type: boolean
-      management_groups:
-        type: boolean
-        default: true
-      logging_and_sentinel_resource_group:
-        type: boolean
-        default: true
-      logging_and_sentinel:
-        type: boolean
-        default: true
-      custom_policy_definitions:
-        type: boolean
-        default: true
-      custom_role_definitions:
-        type: boolean
-        default: true
-      management_group_diagnostic_settings:
-        type: boolean
-        default: true
-      policy_assignments:
-        type: boolean
-        default: true
-      subscription_placement:
-        type: boolean
-        default: true
-      connectivity_resource_group:
-        type: boolean
-        default: true
-      vwan:
-        type: boolean
-        default: true
-      destroy:
-        default: false
-        type: boolean
+push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   whatif:
@@ -50,7 +18,6 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    if: ${{ !inputs.skip_what_if }}
     env:
       PARAMETERS_FILE_NAME: parameters.json
 
