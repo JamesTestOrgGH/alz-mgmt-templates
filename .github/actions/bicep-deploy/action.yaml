@@ -4,7 +4,7 @@ description: Run Bicep Deployment
 inputs:
   whatIfEnabled:
     description: 'Is the WhatIf flag enabled?'
-    required: true
+    required: false
   displayName:
     description: 'Display Name'
     required: true
