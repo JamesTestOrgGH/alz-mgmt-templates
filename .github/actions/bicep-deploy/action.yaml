@@ -31,10 +31,10 @@ inputs:
     required: true
   firstRunWhatIf:
     description: 'Run a what-if on the first run'
-    required: true
+    required: false
   firstDeployment:
     description: 'Is this the first deployment?'
-    required: true
+    required: false
 
 runs:
   using: "composite"
