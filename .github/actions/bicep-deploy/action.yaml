@@ -43,23 +43,7 @@ runs:
       uses: azure/powershell@v2
       with:
         azPSVersion: 'latest'
-        inlineScript: |
-          $whatIf = [System.Convert]::ToBoolean($env:WHAT_IF_ENABLED)
-
-          $firstDeploymentString = $env:FIRST_DEPLOYMENT
-          $firstDeployment = $true
-          if($firstDeploymentString -eq "") {
-            $firstDeployment = $false
-          } else {
-            $firstDeployment = [System.Convert]::ToBoolean($firstDeploymentString)
-          }
-
-          $firstRunWhatIf = [System.Convert]::ToBoolean($env:FIRST_RUN_WHAT_IF)
-
-          if($whatIf -and $firstDeployment -and !$firstRunWhatIf) {
-            Write-Warning "Skipping the WhatIf check as the deployment is dependent on resources that do not exist yet..."
-            exit 0
-          }
+        inlineScript: |          
 
           $deploymentType = $env:DEPLOYMENT_TYPE
 
@@ -80,7 +64,7 @@ runs:
           $inputObject = @{
             TemplateFile          = $env:TEMPLATE_FILE_PATH
             TemplateParameterFile = $env:TEMPLATE_PARAMETERS_FILE_PATH
-            WhatIf                = $whatIf
+            
             Verbose               = $true
           }
 
