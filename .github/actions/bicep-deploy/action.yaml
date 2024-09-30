@@ -13,7 +13,7 @@ inputs:
     required: true
   templateParametersFilePath:
     description: 'The path to the parameters file'
-    required: true
+    required: false
   managementGroupId:
     description: 'The root parent management group id'
     required: true
