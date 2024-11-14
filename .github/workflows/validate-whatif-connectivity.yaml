@@ -1,0 +1,170 @@
+---
+name: Validate and Plan
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - .github/workflows/deploy_connectivity.yaml
+      - 'Platform/subscriptions/connectivity/**'
+  workflow_call:
+
+jobs:
+  validate:
+    name: Validate Bicep
+    runs-on:
+      ubuntu-latest
+    environment: alz-mgmt-plan
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout Bicep Module
+        uses: actions/checkout@v4
+
+      - name: Install Bicep and Update Az Module
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-installer@main
+
+      
+  whatif:
+    name: What If
+    runs-on:
+      ubuntu-latest
+    environment: alz-mgmt-plan
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      PARAMETERS_FILE_NAME: parameters.json
+
+    steps:
+      - name: Checkout Bicep Module
+        uses: actions/checkout@v4
+
+      - name: Get Bicep Variables
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-variables@main
+        with:
+          parameters_file_name: ${{ env.PARAMETERS_FILE_NAME }}
+
+      - name: Install Bicep and Update Az Module
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-installer@main
+
+      - name: OIDC Login to Tenant
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true
+
+      - name: 'What If: Connectivity Vnet'
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
+        with:
+          displayName: 'Connectivity-Vnet'
+          templateFilePath: './Platform/subscriptions/connectivity/vnet/connectivity/deploy.bicep'
+          templateParametersFilePath: './Platform/subscriptions/connectivity/vnet/connectivity/parameters/vnet-connectivity-test-uksouth-01.param.json'
+
+          managementGroupId: ''
+
+          subscriptionId: '${{ env.CONNECTIVITY_SUBSCRIPTION_ID }}'
+          resourceGroupName: '${{ env.CONNECTIVITY_RESOURCE_GROUP }}'
+
+          location: '${{ env.LOCATION }}'
+          deploymentType: 'resourceGroup'
+          firstRunWhatIf: 'true'
+          whatIfEnabled: 'true'
+
+      - name: 'What If: ZScaler Vnet'
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
+        with:
+          displayName: 'Zscaler-Vnet'
+          templateFilePath: './Platform/subscriptions/connectivity/vnet/zscaler/deploy.bicep'
+          templateParametersFilePath: './Platform/subscriptions/connectivity/vnet/zscaler/parameters/vnet-zscaler-connectivity-test-uksouth-01.param.json'
+          managementGroupId: ''
+          subscriptionId: '${{ env.CONNECTIVITY_SUBSCRIPTION_ID }}'
+          resourceGroupName: '${{ env.CONNECTIVITY_RESOURCE_GROUP }}'
+          location: '${{ env.LOCATION }}'
+          deploymentType: 'resourceGroup'
+          firstRunWhatIf: 'true'
+          whatIfEnabled: 'true'
+
+      - name: 'What If: KeyVault'
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
+        with:
+          displayName: 'KeyVault'
+          templateFilePath: './Platform/subscriptions/connectivity/keyvault/deploy.bicep'
+          templateParametersFilePath: './Platform/subscriptions/connectivity/keyvault/parameters/kv-con-test-uksouth-01.param.json'
+          managementGroupId: ''
+          subscriptionId: '${{ env.CONNECTIVITY_SUBSCRIPTION_ID }}'
+          resourceGroupName: ''
+          location: '${{ env.LOCATION }}'
+          deploymentType: 'subscription'
+          firstRunWhatIf: 'true'
+          whatIfEnabled: 'true'
+
+      - name: 'What If: LoadBalancer'
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
+        with:
+          displayName: 'Loadbalancer'
+          templateFilePath: './Platform/subscriptions/connectivity/loadbalancer/deploy.bicep'
+          templateParametersFilePath: './Platform/subscriptions/connectivity/loadbalancer/parameters/lb-zscaler-cc-test-uksouth-01.param.json'
+          managementGroupId: ''
+          subscriptionId: '${{ env.CONNECTIVITY_SUBSCRIPTION_ID }}'
+          resourceGroupName: '${{ env.CONNECTIVITY_RESOURCE_GROUP }}'
+          location: '${{ env.LOCATION }}'
+          deploymentType: 'resourceGroup'
+          firstRunWhatIf: 'true'
+          whatIfEnabled: 'true'
+
+
+      - name: 'What If: Nat Gateway'
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
+        with:
+          displayName: 'Nat Gateway'
+          templateFilePath: './Platform/subscriptions/connectivity/natgateway/deploy.bicep'
+          templateParametersFilePath: './Platform/subscriptions/connectivity/natgateway/parameters/ngw-zscaler-cc-test-uksouth-01.param.json'
+          managementGroupId: ''
+          subscriptionId: '${{ env.CONNECTIVITY_SUBSCRIPTION_ID }}'
+          resourceGroupName: '${{ env.CONNECTIVITY_RESOURCE_GROUP }}'
+          location: '${{ env.LOCATION }}'
+          deploymentType: 'resourceGroup'
+          firstRunWhatIf: 'true'
+          whatIfEnabled: 'true'
+
+
+      - name: 'What If: Private DNS Resolver'
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
+        with:
+          displayName: 'Private DNS Resolver'
+          templateFilePath: './Platform/subscriptions/connectivity/privatednsresolver/deploy.bicep'
+          templateParametersFilePath: './Platform/subscriptions/connectivity/privatednsresolver/parameters/privdnsresolver-scotsconnect-test-connectivity-uksouth-01.param.json'
+          managementGroupId: ''
+          subscriptionId: '${{ env.CONNECTIVITY_SUBSCRIPTION_ID }}'
+          resourceGroupName: '${{ env.CONNECTIVITY_RESOURCE_GROUP }}'
+          location: '${{ env.LOCATION }}'
+          deploymentType: 'resourceGroup'
+          firstRunWhatIf: 'true'
+          whatIfEnabled: 'true'
+
+
+      - name: 'What If: Azure Bastion'
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
+        with:
+          displayName: 'Azure Bastion'
+          templateFilePath: './Platform/subscriptions/connectivity/bastion/deploy.bicep'
+          templateParametersFilePath: './Platform/subscriptions/connectivity/bastion/parameters/bastion-connectivity-test-uksouth-01.param.json'
+          managementGroupId: ''
+          subscriptionId: '${{ env.CONNECTIVITY_SUBSCRIPTION_ID }}'
+          resourceGroupName: '${{ env.CONNECTIVITY_RESOURCE_GROUP }}'
+          location: '${{ env.LOCATION }}'
+          deploymentType: 'subscription'
+          firstRunWhatIf: 'true'
+          whatIfEnabled: 'true'
+
+
+
+          
+     
+
+
+      

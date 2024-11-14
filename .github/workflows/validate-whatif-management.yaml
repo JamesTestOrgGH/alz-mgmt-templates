@@ -1,0 +1,125 @@
+---
+name: Validate and Plan
+on:
+
+  workflow_call:
+
+jobs:
+  validate:
+    name: Validate Bicep
+    runs-on:
+      ubuntu-latest
+    environment: alz-mgmt-plan
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout Bicep Module
+        uses: actions/checkout@v4
+
+      - name: Install Bicep and Update Az Module
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-installer@main
+
+      
+  whatif:
+    name: What If
+    runs-on:
+      ubuntu-latest
+    concurrency: mgmt-tfstate
+    environment: alz-mgmt-plan
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      PARAMETERS_FILE_NAME: parameters.json
+
+    steps:
+      - name: Checkout Bicep Module
+        uses: actions/checkout@v4
+
+      - name: Get Bicep Variables
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-variables@main
+        with:
+          parameters_file_name: ${{ env.PARAMETERS_FILE_NAME }}
+
+      - name: Get On Demand Folder infra-as-code
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-on-demand-folder@main
+        with:
+          repository: "https://github.com/Azure/ALZ-Bicep"
+          releaseArtifactName: "accelerator.zip"
+          releaseVersion: "${{ env.RELEASE_VERSION }}"
+          sourcePath: "infra-as-code"
+          targetPath: "infra-as-code"
+
+      - name: Install Bicep and Update Az Module
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-installer@main
+
+      - name: OIDC Login to Tenant
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true
+
+
+      - name: 'What If: Management Vnet'
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
+        with:
+          displayName: 'Management-Vnet'
+          templateFilePath: './Platform/subscriptions/management/vnet/deploy.bicep'
+          templateParametersFilePath: './Platform/subscriptions/management/vnet/parameters/vnet-management-test-uksouth-01.param.json'
+          managementGroupId: ''
+          subscriptionId: '${{ env.MANAGEMENT_SUBSCRIPTION_ID }}'
+          resourceGroupName: 'rg-network-management-test-uksouth-01'
+          location: '${{ env.LOCATION }}'
+          deploymentType: 'subscription'
+          firstRunWhatIf: 'true'
+          whatIfEnabled: 'true'
+
+
+    
+
+      - name: 'What If: KeyVault'
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
+        with:
+          displayName: 'KeyVault'
+          templateFilePath: './Platform/subscriptions/management/keyvault/deploy.bicep'
+          templateParametersFilePath: './Platform/subscriptions/management/keyvault/parameters/kv-man-test-uksouth-01.param.json'
+          managementGroupId: ''
+          subscriptionId: '${{ env.MANAGEMENT_SUBSCRIPTION_ID }}'
+          resourceGroupName: 'rg-keyvault-management-test-uksouth-01'
+          location: '${{ env.LOCATION }}'
+          deploymentType: 'subscription'
+          firstRunWhatIf: 'true'
+          whatIfEnabled: 'true'
+
+
+      
+      - name: 'What If: Management Jump Server'
+        uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
+        with:
+          displayName: 'Management Jump Server'
+          templateFilePath: './Platform/subscriptions/management/virtualmachines/deploy.bicep'
+          templateParametersFilePath: './Platform/subscriptions/management/virtualmachines/parameters/mgmtvm01.param.json'
+          managementGroupId: ''
+          subscriptionId: '${{ env.MANAGEMENT_SUBSCRIPTION_ID }}'
+          resourceGroupName: 'rg-vms-management-test-uksouth-01'
+          location: '${{ env.LOCATION }}'
+          deploymentType: 'subscription'
+          firstRunWhatIf: 'true'
+          whatIfEnabled: 'true'
+
+
+
+
+      
+
+
+
+          
+     
+
+
+      
