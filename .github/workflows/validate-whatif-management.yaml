@@ -68,8 +68,8 @@ jobs:
         uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
         with:
           displayName: 'Management-Vnet'
-          templateFilePath: './Platform/subscriptions/management/vnet/deploy.bicep'
-          templateParametersFilePath: './Platform/subscriptions/management/vnet/parameters/vnet-management-test-uksouth-01.param.json'
+          templateFilePath: './platform/subscriptions/management/vnet/deploy.bicep'
+          templateParametersFilePath: './platform/subscriptions/management/vnet/parameters/vnet-management-test-uksouth-01.param.json'
           managementGroupId: ''
           subscriptionId: '${{ env.MANAGEMENT_SUBSCRIPTION_ID }}'
           resourceGroupName: 'rg-network-management-test-uksouth-01'
@@ -85,8 +85,8 @@ jobs:
         uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
         with:
           displayName: 'KeyVault'
-          templateFilePath: './Platform/subscriptions/management/keyvault/deploy.bicep'
-          templateParametersFilePath: './Platform/subscriptions/management/keyvault/parameters/kv-man-test-uksouth-01.param.json'
+          templateFilePath: './platform/subscriptions/management/keyvault/deploy.bicep'
+          templateParametersFilePath: './platform/subscriptions/management/keyvault/parameters/kv-man-test-uksouth-01.param.json'
           managementGroupId: ''
           subscriptionId: '${{ env.MANAGEMENT_SUBSCRIPTION_ID }}'
           resourceGroupName: 'rg-keyvault-management-test-uksouth-01'
@@ -101,8 +101,8 @@ jobs:
         uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
         with:
           displayName: 'Management Jump Server'
-          templateFilePath: './Platform/subscriptions/management/virtualmachines/deploy.bicep'
-          templateParametersFilePath: './Platform/subscriptions/management/virtualmachines/parameters/mgmtvm01.param.json'
+          templateFilePath: './platform/subscriptions/management/virtualmachines/deploy.bicep'
+          templateParametersFilePath: './platform/subscriptions/management/virtualmachines/parameters/mgmtvm01.param.json'
           managementGroupId: ''
           subscriptionId: '${{ env.MANAGEMENT_SUBSCRIPTION_ID }}'
           resourceGroupName: 'rg-vms-management-test-uksouth-01'
