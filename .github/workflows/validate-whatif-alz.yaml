@@ -24,7 +24,8 @@ jobs:
         shell: pwsh
 
 
-        working-directory: ./Platform/alz-caf/config
+
+        working-directory: ./platform/alz-caf/config
 
 
         run: |
@@ -43,7 +44,8 @@ jobs:
         if: ${{ env.CUSTOM_MODULES == 'true' }}
 
 
-        working-directory: ./Platform/alz-caf/config/custom-modules
+        working-directory: ./platform/alz-caf/config/custom-modules
+
 
 
         run: |
@@ -117,7 +119,9 @@ jobs:
         with:
           displayName: 'Management Groups Deployment'
           templateFilePath: './infra-as-code/bicep/modules/managementGroups/managementGroupsScopeEscape.bicep'
-          templateParametersFilePath: './Platform/alz-caf/config/custom-parameters/managementGroups.parameters.all.json'
+
+          templateParametersFilePath: './platform/alz-caf/config/custom-parameters/managementGroups.parameters.all.json'
+
           managementGroupId: '${{ env.ROOT_PARENT_MANAGEMENT_GROUP_ID }}'
           subscriptionId: ''
           resourceGroupName: ''
@@ -131,7 +135,8 @@ jobs:
         with:
           displayName: 'Logging and Sentinel Resource Group Deployment'
           templateFilePath: './infra-as-code/bicep/modules/resourceGroup/resourceGroup.bicep'
-          templateParametersFilePath: './Platform/alz-caf/config/custom-parameters/resourceGroupLoggingAndSentinel.parameters.all.json'
+
+          templateParametersFilePath: './platform/alz-caf/config/custom-parameters/resourceGroupLoggingAndSentinel.parameters.all.json'
           managementGroupId: ''
           subscriptionId: '${{ env.MANAGEMENT_SUBSCRIPTION_ID }}'
           resourceGroupName: ''
@@ -145,7 +150,8 @@ jobs:
         with:
           displayName: 'Logging and Sentinel Deployment'
           templateFilePath: './infra-as-code/bicep/modules/logging/logging.bicep'
-          templateParametersFilePath: './Platform/alz-caf/config/custom-parameters/logging.parameters.all.json'
+
+          templateParametersFilePath: './platform/alz-caf/config/custom-parameters/logging.parameters.all.json'
           managementGroupId: ''
           subscriptionId: '${{ env.MANAGEMENT_SUBSCRIPTION_ID }}'
           resourceGroupName: '${{ env.LOGGING_RESOURCE_GROUP }}'
@@ -159,7 +165,7 @@ jobs:
         with:
           displayName: 'Custom Policy Definitions Deployment'
           templateFilePath: './infra-as-code/bicep/modules/policy/definitions/customPolicyDefinitions.bicep'
-          templateParametersFilePath: './Platform/alz-caf/config/custom-parameters/customPolicyDefinitions.parameters.all.json'
+          templateParametersFilePath: './platform/alz-caf/config/custom-parameters/customPolicyDefinitions.parameters.all.json'
           managementGroupId: '${{ env.MANAGEMENT_GROUP_ID }}'
           subscriptionId: ''
           resourceGroupName: ''
@@ -173,7 +179,8 @@ jobs:
         with:
           displayName: 'Custom Role Definitions Deployment'
           templateFilePath: './infra-as-code/bicep/modules/customRoleDefinitions/customRoleDefinitions.bicep'
-          templateParametersFilePath: './Platform/alz-caf/config/custom-parameters/customRoleDefinitions.parameters.all.json'
+          templateParametersFilePath: './platform/alz-caf/config/custom-parameters/customRoleDefinitions.parameters.all.json'
+
           managementGroupId: '${{ env.MANAGEMENT_GROUP_ID }}'
           subscriptionId: ''
           resourceGroupName: ''
@@ -187,7 +194,8 @@ jobs:
         with:
           displayName: 'Custom Management Group Diagnostic Settings'
           templateFilePath: './infra-as-code/bicep/orchestration/mgDiagSettingsAll/mgDiagSettingsAll.bicep'
-          templateParametersFilePath: './Platform/alz-caf/config/custom-parameters/mgDiagSettingsAll.parameters.all.json'
+
+          templateParametersFilePath: './platform/alz-caf/config/custom-parameters/mgDiagSettingsAll.parameters.all.json'
           managementGroupId: '${{ env.MANAGEMENT_GROUP_ID }}'
           subscriptionId: ''
           resourceGroupName: ''
@@ -201,7 +209,7 @@ jobs:
         with:
           displayName: 'Built-in and Custom Policy Assignments Deployment'
           templateFilePath: './infra-as-code/bicep/modules/policy/assignments/alzDefaults/alzDefaultPolicyAssignments.bicep'
-          templateParametersFilePath: './Platform/alz-caf/config/custom-parameters/alzDefaultPolicyAssignments.parameters.all.json'
+          templateParametersFilePath: './platform/alz-caf/config/custom-parameters/alzDefaultPolicyAssignments.parameters.all.json'
           managementGroupId: '${{ env.MANAGEMENT_GROUP_ID }}'
           subscriptionId: ''
           resourceGroupName: ''
@@ -215,7 +223,7 @@ jobs:
         with:
           displayName: 'Deploy Subscription Placement'
           templateFilePath: './infra-as-code/bicep/orchestration/subPlacementAll/subPlacementAll.bicep'
-          templateParametersFilePath: './Platform/alz-caf/config/custom-parameters/subPlacementAll.parameters.all.json'
+          templateParametersFilePath: './platform/alz-caf/config/custom-parameters/subPlacementAll.parameters.all.json'
           managementGroupId: '${{ env.MANAGEMENT_GROUP_ID }}'
           subscriptionId: ''
           resourceGroupName: ''
@@ -229,7 +237,7 @@ jobs:
         with:
           displayName: 'Connectivity Resource Group Deployment'
           templateFilePath: './infra-as-code/bicep/modules/resourceGroup/resourceGroup.bicep'
-          templateParametersFilePath: './Platform/alz-caf/config/custom-parameters/resourceGroupConnectivity.parameters.all.json'
+          templateParametersFilePath: './platform/alz-caf/config/custom-parameters/resourceGroupConnectivity.parameters.all.json'
           managementGroupId: ''
           subscriptionId: '${{ env.CONNECTIVITY_SUBSCRIPTION_ID }}'
           resourceGroupName: ''
@@ -245,7 +253,7 @@ jobs:
         with:
           displayName: 'Hub (VWAN) Deployment'
           templateFilePath: './infra-as-code/bicep/modules/vwanConnectivity/vwanConnectivity.bicep'
-          templateParametersFilePath: './Platform/alz-caf/config/custom-parameters/vwanConnectivity.parameters.all.json'
+          templateParametersFilePath: './platform/alz-caf/config/custom-parameters/vwanConnectivity.parameters.all.json'
           managementGroupId: ''
           subscriptionId: '${{ env.CONNECTIVITY_SUBSCRIPTION_ID }}'
           resourceGroupName: '${{ env.CONNECTIVITY_RESOURCE_GROUP }}'
