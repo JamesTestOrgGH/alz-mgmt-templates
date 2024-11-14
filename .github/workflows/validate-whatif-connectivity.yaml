@@ -61,14 +61,12 @@ jobs:
         uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
         with:
           displayName: 'Connectivity-Vnet'
+
           templateFilePath: './platform/subscriptions/connectivity/vnet/connectivity/deploy.bicep'
           templateParametersFilePath: './platform/subscriptions/connectivity/vnet/connectivity/parameters/vnet-connectivity-test-uksouth-01.param.json'
-
           managementGroupId: ''
-
           subscriptionId: '${{ env.CONNECTIVITY_SUBSCRIPTION_ID }}'
           resourceGroupName: '${{ env.CONNECTIVITY_RESOURCE_GROUP }}'
-
           location: '${{ env.LOCATION }}'
           deploymentType: 'resourceGroup'
           firstRunWhatIf: 'true'
@@ -136,6 +134,7 @@ jobs:
         uses: JamesTestOrgGH/alz-mgmt-templates/.github/actions/bicep-deploy@main
         with:
           displayName: 'Private DNS Resolver'
+
           templateFilePath: './platform/subscriptions/connectivity/privatednsresolver/deploy.bicep'
           templateParametersFilePath: './platform/subscriptions/connectivity/privatednsresolver/parameters/privdnsresolver-scotsconnect-test-connectivity-uksouth-01.param.json'
           managementGroupId: ''

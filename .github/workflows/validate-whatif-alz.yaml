@@ -24,6 +24,7 @@ jobs:
         shell: pwsh
 
 
+
         working-directory: ./platform/alz-caf/config
 
 
@@ -44,6 +45,7 @@ jobs:
 
 
         working-directory: ./platform/alz-caf/config/custom-modules
+
 
 
         run: |
@@ -117,7 +119,9 @@ jobs:
         with:
           displayName: 'Management Groups Deployment'
           templateFilePath: './infra-as-code/bicep/modules/managementGroups/managementGroupsScopeEscape.bicep'
+
           templateParametersFilePath: './platform/alz-caf/config/custom-parameters/managementGroups.parameters.all.json'
+
           managementGroupId: '${{ env.ROOT_PARENT_MANAGEMENT_GROUP_ID }}'
           subscriptionId: ''
           resourceGroupName: ''
@@ -131,6 +135,7 @@ jobs:
         with:
           displayName: 'Logging and Sentinel Resource Group Deployment'
           templateFilePath: './infra-as-code/bicep/modules/resourceGroup/resourceGroup.bicep'
+
           templateParametersFilePath: './platform/alz-caf/config/custom-parameters/resourceGroupLoggingAndSentinel.parameters.all.json'
           managementGroupId: ''
           subscriptionId: '${{ env.MANAGEMENT_SUBSCRIPTION_ID }}'
@@ -145,6 +150,7 @@ jobs:
         with:
           displayName: 'Logging and Sentinel Deployment'
           templateFilePath: './infra-as-code/bicep/modules/logging/logging.bicep'
+
           templateParametersFilePath: './platform/alz-caf/config/custom-parameters/logging.parameters.all.json'
           managementGroupId: ''
           subscriptionId: '${{ env.MANAGEMENT_SUBSCRIPTION_ID }}'
@@ -174,6 +180,7 @@ jobs:
           displayName: 'Custom Role Definitions Deployment'
           templateFilePath: './infra-as-code/bicep/modules/customRoleDefinitions/customRoleDefinitions.bicep'
           templateParametersFilePath: './platform/alz-caf/config/custom-parameters/customRoleDefinitions.parameters.all.json'
+
           managementGroupId: '${{ env.MANAGEMENT_GROUP_ID }}'
           subscriptionId: ''
           resourceGroupName: ''
@@ -187,6 +194,7 @@ jobs:
         with:
           displayName: 'Custom Management Group Diagnostic Settings'
           templateFilePath: './infra-as-code/bicep/orchestration/mgDiagSettingsAll/mgDiagSettingsAll.bicep'
+
           templateParametersFilePath: './platform/alz-caf/config/custom-parameters/mgDiagSettingsAll.parameters.all.json'
           managementGroupId: '${{ env.MANAGEMENT_GROUP_ID }}'
           subscriptionId: ''
