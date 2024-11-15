@@ -136,7 +136,7 @@ jobs:
           displayName: 'Private DNS Resolver'
 
           templateFilePath: './platform/subscriptions/connectivity/privatednsresolver/deploy.bicep'
-          templateParametersFilePath: './platform/subscriptions/connectivity/privatednsresolver/parameters/privdnsresolver-scotsconnect-test-connectivity-uksouth-01.param.json'
+          templateParametersFilePath: './platform/subscriptions/connectivity/privatednsresolver/parameters/privdnsresolver-test-connectivity-uksouth-01.param.json'
           managementGroupId: ''
           subscriptionId: '${{ env.CONNECTIVITY_SUBSCRIPTION_ID }}'
           resourceGroupName: '${{ env.CONNECTIVITY_RESOURCE_GROUP }}'
